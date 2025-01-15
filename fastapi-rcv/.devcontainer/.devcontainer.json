@@ -1,0 +1,19 @@
+{
+    "name": "FastAPI RCV Dev Container",
+  
+    // Build from the Dockerfile at the project root
+    "dockerFile": "../Dockerfile",
+  
+    // Forward port 8000 for FastAPI
+    "forwardPorts": [8000],
+  
+    // Run commands after container is created 
+    // (even though the Dockerfile already installs dependencies)
+    "postCreateCommand": "pip install --no-cache-dir -r requirements.txt",
+  
+    // Optional VS Code settings
+    "settings": {
+      "terminal.integrated.shell.linux": "/bin/bash"
+    }
+  }
+  

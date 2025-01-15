@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Vote</title>
+</head>
+<body>
+    <h1>Cast Your Vote</h1>
+    <form method="POST" action="">
+        <label for="rank1">1st Choice:</label>
+        <select id="rank1" name="rank1">
+            {% for candidate in candidates %}
+            <option value="{{ candidate }}">{{ candidate }}</option>
+            {% endfor %}
+        </select>
+        <br><br>
+
+        <label for="rank2">2nd Choice:</label>
+        <select id="rank2" name="rank2">
+            {% for candidate in candidates %}
+            <option value="{{ candidate }}">{{ candidate }}</option>
+            {% endfor %}
+        </select>
+        <br><br>
+
+        <label for="rank3">3rd Choice:</label>
+        <select id="rank3" name="rank3">
+            {% for candidate in candidates %}
+            <option value="{{ candidate }}">{{ candidate }}</option>
+            {% endfor %}
+        </select>
+        <br><br>
+
+        <input type="submit" value="Submit Vote" />
+    </form>
+
+    <hr>
+    <a href="/close">Close Election</a>
+</body>
+</html>
