@@ -11,5 +11,8 @@
         <br><br>
         <input type="submit" value="Start Election" />
     </form>
+    {% if error %}
+    <p style="color: red;">{{ error }}</p>
+    {% endif %}
 </body>
 </html>
