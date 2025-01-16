@@ -88,6 +88,8 @@ async def post_start(
 
     # Parse input
     raw_candidates = [c.strip() for c in candidate_list.split(",") if c.strip()]
+    if len(raw_candidates) != len(set(raw_candidates)):
+        return templates.TemplateResponse("start.html", {"request": request, "error": "Duplicate candidates are not allowed."})
     if raw_candidates:
         candidates = raw_candidates
         election_open = True
@@ -124,6 +126,9 @@ async def post_vote(
     """
     if not election_open:
         return RedirectResponse(url="/start")
+
+    if len({rank1, rank2, rank3}) < 3:
+        return templates.TemplateResponse("vote.html", {"request": request, "candidates": candidates, "error": "Duplicate choices are not allowed."})
 
     global ballots
     ballots.append([rank1, rank2, rank3])
