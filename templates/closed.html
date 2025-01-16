@@ -6,6 +6,8 @@
 <body>
     <h1>Election Closed</h1>
     <h2>Winner: {{ winner }}</h2>
+    <p>Round Number: {{ round_number }}</p>
+    <p>Votes Won: {{ winner_votes }}</p>
     <form method="GET" action="/start">
         <input type="submit" value="Start New Election" />
     </form>
