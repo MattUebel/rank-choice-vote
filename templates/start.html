@@ -2,6 +2,18 @@
 <html>
 <head>
     <title>Start an Election</title>
+    <style>
+        body {
+            background-color: #f0f8ff;
+            font-family: 'Courier New', Courier, monospace;
+            text-align: center;
+        }
+        .ascii-art {
+            font-family: 'Courier New', Courier, monospace;
+            white-space: pre;
+            margin-top: 20px;
+        }
+    </style>
 </head>
 <body>
     <h1>Start New Election</h1>
@@ -14,5 +26,12 @@
     {% if error %}
     <p style="color: red;">{{ error }}</p>
     {% endif %}
+    <div class="ascii-art">
+        <pre>
+          /\_/\  
+         ( o.o ) 
+          > ^ <
+        </pre>
+    </div>
 </body>
 </html>
