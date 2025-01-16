@@ -15,12 +15,13 @@ templates = Jinja2Templates(directory="templates")
 candidates: List[str] = []
 ballots: List[List[str]] = []
 election_open: bool = False
+round_number: int = 0
 
 
-def ranked_choice_voting(ballots: List[List[str]]) -> str:
+def ranked_choice_voting(ballots: List[List[str]]) -> (str, int):
     """
     Implements a simple Ranked-Choice Voting (Instant-Runoff).
-    Returns the name of the winning candidate.
+    Returns the name of the winning candidate and the number of votes the winner won with.
     """
     # Gather a set of all candidates from all ballots
     active_candidates = list({cand for ballot in ballots for cand in ballot})
@@ -40,7 +41,7 @@ def ranked_choice_voting(ballots: List[List[str]]) -> str:
         # Check for majority (> 50%)
         for cand, count in vote_counts.items():
             if count > total_votes / 2:
-                return cand  # Found a winner
+                return cand, count  # Found a winner
 
         # Identify candidates with the fewest votes
         min_votes = min(vote_counts.values())
@@ -52,7 +53,7 @@ def ranked_choice_voting(ballots: List[List[str]]) -> str:
 
         # If only one candidate remains, they are the winner
         if len(active_candidates) == 1:
-            return active_candidates[0]
+            return active_candidates[0], vote_counts[active_candidates[0]]
 
 
 @app.get("/", response_class=HTMLResponse)
@@ -79,12 +80,13 @@ async def post_start(
     """
     Handles the creation of a new election, resetting global state.
     """
-    global candidates, ballots, election_open
+    global candidates, ballots, election_open, round_number
 
     # Reset in-memory data
     candidates = []
     ballots = []
     election_open = False
+    round_number = 0
 
     # Parse input
     raw_candidates = [c.strip() for c in candidate_list.split(",") if c.strip()]
@@ -156,9 +158,10 @@ async def results(request: Request):
 
     if not candidates or not ballots:
         winner = "No valid winner (no candidates or no ballots)."
+        winner_votes = 0
     else:
-        winner = ranked_choice_voting(ballots)
+        winner, winner_votes = ranked_choice_voting(ballots)
 
     return templates.TemplateResponse(
-        "closed.html", {"request": request, "winner": winner}
+        "closed.html", {"request": request, "winner": winner, "round_number": round_number, "winner_votes": winner_votes}
     )
